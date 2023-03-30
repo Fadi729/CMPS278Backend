@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMPS278Backend", "CMPS278Backend\CMPS278Backend.csproj", "{34D51321-1C8C-4657-B84D-017412BFD414}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34D51321-1C8C-4657-B84D-017412BFD414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34D51321-1C8C-4657-B84D-017412BFD414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34D51321-1C8C-4657-B84D-017412BFD414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34D51321-1C8C-4657-B84D-017412BFD414}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {240FB727-D4FB-4C82-AE89-A000C6C7F6F9}
+	EndGlobalSection
+EndGlobal
