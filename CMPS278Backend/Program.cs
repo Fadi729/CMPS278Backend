@@ -3,8 +3,6 @@ using CMPS278Backend.Data;
 using CMPS278Backend.Models;
 using CMPS278Backend.Services;
 using CMPS278Backend.Services.Contracts;
-using Google.Apis.Auth.AspNetCore3;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +10,14 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CMPS278DbContext>(options =>
                                                     options
                                                        .UseSqlServer(builder.Configuration
-                                                                         ["ConnectionStrings:DevDB"]));
+                                                                            .GetConnectionString("CMPS278ProjectDB")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CMPS278DbContext>();
 
@@ -30,6 +25,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 JwtSettings jwtSettings = new();
 builder.Configuration.Bind(nameof(JwtSettings), jwtSettings);
 builder.Services.AddSingleton(jwtSettings);
+
+GoogleSettings googleSettings = new();
+builder.Configuration.Bind(nameof(GoogleSettings), googleSettings);
+builder.Services.AddSingleton(googleSettings);
 
 
 builder.Services
@@ -67,7 +66,8 @@ builder.Services.AddCors(options =>
                       policyBuilder =>
                       {
                           policyBuilder
-                             .WithOrigins("http://localhost:5173")
+                             .WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins")
+                                                 .Get<string[]>())
                              .AllowAnyHeader()
                              .AllowAnyMethod();
                       });

@@ -13,39 +13,43 @@ public class UserService : IUserService
 {
     readonly UserManager<IdentityUser> _userManager;
     readonly JwtSettings               _jwtSettings;
+    readonly GoogleSettings            _googleSettings;
 
-    public UserService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings)
+    public UserService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings, GoogleSettings googleSettings)
     {
-        _userManager = userManager;
-        _jwtSettings = jwtSettings;
+        _userManager    = userManager;
+        _jwtSettings    = jwtSettings;
+        _googleSettings = googleSettings;
     }
 
-    public Task RegisterAsync()
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<JwtToken> LoginAsync(string token, CancellationToken cancellationToken)
     {
         GoogleJsonWebSignature.Payload? googleUser =
-            await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings()
+            await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings
             {
-                Audience = new[] { "841180126145-d7m3288q5uuvij6ber21tnjsvd2kke59.apps.googleusercontent.com" }
+                Audience = new[] { _googleSettings.ClientId }
             });
 
-        IdentityUser user = new()
+
+        IdentityUser? user = await _userManager.FindByIdAsync(googleUser.Subject);
+
+        if (user is null)
+        {
+            await RegisterAsync(googleUser, cancellationToken);
+        }
+
+        return AuthenticationTokenGeneratorAsync(googleUser);
+    }
+
+    async Task RegisterAsync(GoogleJsonWebSignature.Payload googleUser, CancellationToken cancellationToken)
+    {
+        IdentityResult creationResult = await _userManager.CreateAsync(new IdentityUser
         {
             Email    = googleUser.Email,
             UserName = googleUser.Email.Split("@")[0],
             Id       = googleUser.Subject
-        };
-
-        IdentityResult creationResult = await _userManager.CreateAsync(user);
-
-        // if (creationResult.Succeeded)
-        // {
-        return AuthenticationTokenGeneratorAsync(googleUser);
-        // }
+        });
     }
 
     JwtToken AuthenticationTokenGeneratorAsync(GoogleJsonWebSignature.Payload googleUser)
@@ -62,7 +66,7 @@ public class UserService : IUserService
 
 
             Expires = googleUser.ExpirationTimeSeconds.HasValue
-                ? DateTimeOffset.FromUnixTimeSeconds(googleUser.ExpirationTimeSeconds.Value).DateTime.AddMinutes(1)
+                ? DateTime.UnixEpoch.AddSeconds(googleUser.ExpirationTimeSeconds.Value)
                 : DateTime.UtcNow.AddHours(1),
 
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
