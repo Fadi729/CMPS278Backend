@@ -51,11 +51,6 @@ builder.Services
                 ValidateLifetime         = true,
                 ClockSkew                = TimeSpan.Zero
             };
-            options.Events = new JwtBearerEvents
-            {
-                // Todo: Create Exception Handler
-                // OnChallenge = _ => throw new UnauthorizedRequestException()
-            };
         });
 
 builder.Services.AddScoped<IUserService, UserService>();
