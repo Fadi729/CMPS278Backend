@@ -1,20 +1,29 @@
 ﻿using System;
-namespace CMPS278Backend.Models
-{
-	public class BooksData
-	{
-            public string Id { get; set; }
-            public string Title { get; set; } = string.Empty;
-            public string description { get; set; } = string.Empty;
-            public string authors { get; set; } = string.Empty;
-            public string image { get; set; } = string.Empty;
-            public string previewLink { get; set; } = string.Empty;
-            public string publisher { get; set; } = string.Empty;
-            public string publishedDate { get; set; } = string.Empty;
-            public string infoLink { get; set; } = string.Empty;
-            public string categories { get; set; } = string.Empty;
-            public int ratingsCount { get; set; }
-      
-	}
-}
+using System.Collections.Generic;
 
+namespace CMPS278Backend.Models;
+
+public partial class BooksData
+{
+    public string Id { get; set; } = null!;
+
+    public string Title { get; set; } = null!;
+
+    public string? Description { get; set; }
+
+    public string? Authors { get; set; }
+
+    public string? Image { get; set; }
+
+    public string? PreviewLink { get; set; }
+
+    public string? Publisher { get; set; }
+
+    public string? PublishedDate { get; set; }
+
+    public string? InfoLink { get; set; }
+
+    public string? Categories { get; set; }
+
+    public int? RatingsCount { get; set; }
+}

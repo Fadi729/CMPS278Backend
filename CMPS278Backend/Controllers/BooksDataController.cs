@@ -13,7 +13,8 @@ using Microsoft.EntityFrameworkCore;
 namespace CMPS278Backend.Controllers
 {
     [Route("api/[controller]")]
-    public class BooksDataController : Controller
+    [ApiController]
+    public class BooksDataController : ControllerBase
     {
         //private static List<BooksData> books = new List<BooksData>
         //    {
@@ -46,7 +47,7 @@ namespace CMPS278Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<BooksData>>> Get()
         {
-            return Ok(_context.BooksDatas.ToListAsync());
+            return Ok(await _context.BooksDatas.ToListAsync());
         }
 
 

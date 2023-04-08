@@ -1,19 +1,29 @@
 ﻿using System;
-namespace CMPS278Backend.Models
+using System.Collections.Generic;
+
+namespace CMPS278Backend.Models;
+
+public partial class BooksReview
 {
-	public class BooksReview
-	{
-        public int Id { get; set; }
-        public string Book_ID { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public int Price { get; set; }
-        public string User_id { get; set; } = string.Empty;
-        public string profileName { get; set; } = string.Empty;
-        public int reviewhelpfulness { get; set; }
-        public int reviewscore { get; set; }
-        public string reviewsummary { get; set; } = string.Empty;
-        public string reviewtext { get; set; } = string.Empty;
+    public int Id { get; set; }
 
-    }
+    public string Book_Id { get; set; } = null!;
+
+    public string? Title { get; set; }
+
+    public decimal? Price { get; set; }
+
+    public string? User_Id { get; set; }
+
+    public string? ProfileName { get; set; }
+
+    public string Reviewhelpfulness { get; set; } = null!;
+
+    public decimal Reviewscore { get; set; }
+
+    public int Reviewtime { get; set; }
+
+    public string Reviewsummary { get; set; } = null!;
+
+    public string Reviewtext { get; set; } = null!;
 }
-
