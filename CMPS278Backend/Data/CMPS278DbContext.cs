@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CMPS278Backend;
 
 namespace CMPS278Backend.Data;
 
@@ -15,5 +16,7 @@ public class CMPS278DbContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(builder);
     }
+
+    public DbSet<CMPS278Backend.Movies> Movies { get; set; } = default!;
     
 }
