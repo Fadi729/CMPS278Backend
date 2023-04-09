@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CMPS278Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class CreateInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,48 @@ namespace CMPS278Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BooksDatas",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    authors = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    previewLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    publishedDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    infoLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    categories = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ratingsCount = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BooksDatas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BooksReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Book_ID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: true),
+                    User_id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    profileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    reviewhelpfulness = table.Column<int>(type: "int", nullable: false),
+                    reviewscore = table.Column<int>(type: "int", nullable: false),
+                    reviewsummary = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    reviewtext = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BooksReviews", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +255,12 @@ namespace CMPS278Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BooksDatas");
+
+            migrationBuilder.DropTable(
+                name: "BooksReviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

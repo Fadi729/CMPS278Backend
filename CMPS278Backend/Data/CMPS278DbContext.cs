@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CMPS278Backend.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using CMPS278Backend;
@@ -11,6 +12,9 @@ public class CMPS278DbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
+
+    public DbSet<BooksData> BooksDatas { get; set;}
+    public DbSet<BooksReview> BooksReviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
