@@ -16,12 +16,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<CMPS278DbContext>(options =>
+builder.Services.AddDbContext<CMPS278IdentityContext>(options =>
                                                     options
                                                        .UseSqlServer(builder.Configuration
-                                                                            .GetConnectionString("CMPS278ProjectDB")));
+                                                                             .GetConnectionString("CMPS278ProjectDB")));
+builder.Services.AddDbContext<CMPS278DataContext>(options =>
+                                                      options
+                                                         .UseSqlServer(builder.Configuration
+                                                                              .GetConnectionString("CMPS278ProjectDB")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CMPS278DbContext>();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CMPS278IdentityContext>();
 
 
 JwtSettings jwtSettings = new();

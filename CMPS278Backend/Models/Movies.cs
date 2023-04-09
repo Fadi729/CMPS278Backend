@@ -23,8 +23,5 @@
         public int price { get; set; }
 
         public string reviews { get; set; }
-
-
-
     }
 }

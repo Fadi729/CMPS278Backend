@@ -34,9 +34,9 @@ namespace CMPS278Backend.Controllers
         //    };
 
 
-        private readonly CMPS278DbContext _context;
+        private readonly CMPS278DataContext _context;
 
-        public BooksReviewController(CMPS278DbContext context)
+        public BooksReviewController(CMPS278DataContext context)
         {
             _context = context;
 

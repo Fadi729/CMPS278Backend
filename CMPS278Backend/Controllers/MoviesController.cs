@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CMPS278Backend.Data;
+using CMPS278Backend.Models;
 
 
 namespace CMPS278Backend.Controllers;
@@ -8,9 +9,9 @@ namespace CMPS278Backend.Controllers;
 [Route("api/[controller]")]
 public class MoviesController : ControllerBase
 {
-    private readonly CMPS278DbContext _context;
+    private readonly CMPS278DataContext _context;
 
-    public MoviesController(CMPS278DbContext context)
+    public MoviesController(CMPS278DataContext context)
     {
         _context = context;
     }
