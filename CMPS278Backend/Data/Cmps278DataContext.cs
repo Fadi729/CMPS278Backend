@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using CMPS278Backend.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,15 @@ public partial class CMPS278DataContext : DbContext
 
     public virtual DbSet<BooksReview> BooksReviews { get; set; }
 
+    public virtual DbSet<ApplicationData> ApplicationData { get; set; }
+
+    public virtual DbSet<ApplicationReview> ApplicationReviews { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder
-               .UseSqlServer("name=ConnectionStrings:CMPS278ProjectDB");
+           .UseSqlServer("name=ConnectionStrings:CMPS278ProjectDB");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -103,6 +108,28 @@ public partial class CMPS278DataContext : DbContext
                   .HasMaxLength(21)
                   .IsUnicode(false)
                   .HasColumnName("User_id");
+        });
+
+        modelBuilder.Entity<ApplicationData>(entity =>
+        {
+            entity.HasKey(e => e.AppId);
+
+            entity.Property(e => e.Histogram)
+                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                                 v => JsonSerializer
+                                    .Deserialize<IDictionary<string, int>>(v, (JsonSerializerOptions)null));
+
+            entity.Property(e => e.Screenshots)
+                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                                 v =>
+                                     JsonSerializer
+                                        .Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
+
+            entity.Property(e => e.Comments)
+                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                                 v =>
+                                     JsonSerializer
+                                        .Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
         });
 
         OnModelCreatingPartial(modelBuilder);
