@@ -9,4 +9,9 @@ public static class GameReviewExtensions
     {
         return review.ToBaseReviewModel<GameReview>();
     }
+    
+    public static GameReviewDTO ToGameReviewDTO(this GameReview review)
+    {
+        return review.ToBaseReviewModelDTO<GameReviewDTO>();
+    }
 }

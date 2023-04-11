@@ -11,4 +11,11 @@ public static class GameDataExtensions
         gameData.Reviews = data.Reviews.Select(review => review.ToGameReview()).ToList();
         return gameData;
     }
+    
+    public static GameDataDTO ToGameDataDTO(this GameData data)
+    {
+        GameDataDTO appData = data.ToBaseDataModelDTO<GameDataDTO>();
+        appData.Reviews = data.Reviews.Select(review => review.ToGameReviewDTO()).ToList();
+        return appData;
+    }
 }

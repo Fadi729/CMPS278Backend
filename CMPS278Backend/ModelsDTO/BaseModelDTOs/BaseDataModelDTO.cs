@@ -9,19 +9,19 @@ public abstract class BaseDataModelDTO
     public string?                   Developer                { get; set; }
     public string?                   DeveloperId              { get; set; }
     public string?                   Icon                     { get; set; }
-    public float?                    Score                    { get; set; }
+    public double?                   Score                    { get; set; }
     public string?                   ScoreText                { get; set; }
     public string?                   PriceText                { get; set; }
     public bool?                     Free                     { get; set; }
     public string?                   Description              { get; set; }
     public string?                   DescriptionHTML          { get; set; }
     public string?                   Installs                 { get; set; }
-    public long?                      MinInstalls              { get; set; }
-    public long?                      MaxInstalls              { get; set; }
-    public long?                      Ratings                  { get; set; }
-    public long?                      ReviewsCount             { get; set; }
+    public long?                     MinInstalls              { get; set; }
+    public long?                     MaxInstalls              { get; set; }
+    public long?                     Ratings                  { get; set; }
+    public long?                     ReviewsCount             { get; set; }
     public IDictionary<string, int>? Histogram                { get; set; }
-    public float?                    Price                    { get; set; }
+    public double?                   Price                    { get; set; }
     public string?                   Currency                 { get; set; }
     public bool?                     Available                { get; set; }
     public bool?                     OffersIAP                { get; set; }

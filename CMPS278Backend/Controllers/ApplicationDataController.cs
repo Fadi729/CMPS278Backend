@@ -19,68 +19,18 @@ public class ApplicationDataController : ControllerBase
 
     // GET: api/ApplicationData
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ApplicationData>>> GetApplicationData()
+    public async Task<ActionResult<IEnumerable<ApplicationDataDTO>>> GetApplicationData()
     {
         if (_context.ApplicationData == null)
         {
             return NotFound();
         }
 
-        return await _context.ApplicationData.ToListAsync();
-    }
-
-    // GET: api/ApplicationData/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ApplicationData>> GetApplicationData(string id)
-    {
-        if (_context.ApplicationData == null)
-        {
-            return NotFound();
-        }
-
-        var applicationData = await _context.ApplicationData.FindAsync(id);
-
-        if (applicationData == null)
-        {
-            return NotFound();
-        }
-
-        return applicationData;
-    }
-
-    // PUT: api/ApplicationData/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutApplicationData(string id, ApplicationData applicationData)
-    {
-        if (id != applicationData.AppId)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(applicationData).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!ApplicationDataExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
+        return await _context.ApplicationData.Include(data => data.Reviews).Select(app => app.ToApplicationDataDTO())
+                             .ToListAsync();
     }
 
     // POST: api/ApplicationData
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<ApplicationData>> PostApplicationData(ApplicationDataDTO applicationData)
     {
@@ -109,9 +59,9 @@ public class ApplicationDataController : ControllerBase
         return CreatedAtAction("GetApplicationData", new { id = applicationData.AppId }, applicationData);
     }
 
+    // POST: api/ApplicationData/list
     [HttpPost("list")]
-    public async Task<ActionResult<ApplicationData>> PostApplicationDataList(
-        IEnumerable<ApplicationDataDTO> applicationDataList)
+    public async Task<ActionResult<ApplicationData>> PostApplicationDataList(IEnumerable<ApplicationDataDTO> applicationDataList)
     {
         if (_context.ApplicationData == null)
         {
@@ -159,7 +109,7 @@ public class ApplicationDataController : ControllerBase
         return NoContent();
     }
 
-    private bool ApplicationDataExists(string id)
+    bool ApplicationDataExists(string id)
     {
         return (_context.ApplicationData?.Any(e => e.AppId == id)).GetValueOrDefault();
     }
