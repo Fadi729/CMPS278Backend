@@ -1,6 +1,5 @@
 ﻿using CMPS278Backend.Models;
 using CMPS278Backend.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMPS278Backend.Controllers;

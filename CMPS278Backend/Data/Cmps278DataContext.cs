@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using CMPS278Backend.Data;
+﻿using System.Text.Json;
+using CMPS278Backend.Models.Games;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CMPS278Backend.Models;
 
@@ -19,6 +18,10 @@ public partial class CMPS278DataContext : DbContext
     public virtual DbSet<ApplicationData> ApplicationData { get; set; }
 
     public virtual DbSet<ApplicationReview> ApplicationReviews { get; set; }
+
+    public virtual DbSet<GameData> GameData { get; set; }
+
+    public virtual DbSet<GameReview> GameReviews { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -110,29 +113,25 @@ public partial class CMPS278DataContext : DbContext
                   .HasColumnName("User_id");
         });
 
-        modelBuilder.Entity<ApplicationData>(entity =>
-        {
-            entity.HasKey(e => e.AppId);
-
-            entity.Property(e => e.Histogram)
-                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                                 v => JsonSerializer
-                                    .Deserialize<IDictionary<string, int>>(v, (JsonSerializerOptions)null));
-
-            entity.Property(e => e.Screenshots)
-                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                                 v =>
-                                     JsonSerializer
-                                        .Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
-
-            entity.Property(e => e.Comments)
-                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                                 v =>
-                                     JsonSerializer
-                                        .Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
-        });
+        modelBuilder.Entity<ApplicationData>(BaseModelBuilder);
+        
+        modelBuilder.Entity<GameData>(BaseModelBuilder);
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    static void BaseModelBuilder<T>(EntityTypeBuilder<T> entity) where T : BaseDataModel
+    {
+          entity.HasKey(e => e.AppId);
+
+          entity.Property(e => e.Histogram)
+                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IDictionary<string, int>>(v, (JsonSerializerOptions)null));
+
+          entity.Property(e => e.Screenshots)
+                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
+
+          entity.Property(e => e.Comments)
+                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

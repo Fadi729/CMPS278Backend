@@ -1,7 +1,7 @@
 ﻿namespace CMPS278Backend.Models;
 
 // Base Model class for Apps and Games to inherit from
-public class BaseDataModel
+public abstract class BaseDataModel
 {
     public string                    Url                      { get; set; }
     public string                    AppId                    { get; set; }
@@ -50,6 +50,4 @@ public class BaseDataModel
     public string?                   Version                  { get; set; }
     public string?                   RecentChanges            { get; set; }
     public IList<string>?            Comments                 { get; set; }
-
-    // public virtual ICollection<ApplicationReview> Reviews { get; set; }
 }

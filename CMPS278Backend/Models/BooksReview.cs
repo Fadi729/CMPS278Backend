@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CMPS278Backend.Models;
+﻿namespace CMPS278Backend.Models;
 
 public partial class BooksReview
 {

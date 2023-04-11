@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMPS278Backend.Data;
 using CMPS278Backend.Models;
 
 

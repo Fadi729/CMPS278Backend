@@ -1,6 +1,6 @@
 ﻿namespace CMPS278Backend.Models;
 
-public class BaseReviewModel
+public abstract class BaseReviewModel
 {
     public string  Id        { get; set; }
     public string? UserName  { get; set; }

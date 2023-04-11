@@ -1,8 +1,6 @@
-﻿using CMPS278Backend.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using CMPS278Backend;
 
 namespace CMPS278Backend.Data;
 
