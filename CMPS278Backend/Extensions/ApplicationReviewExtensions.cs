@@ -10,7 +10,6 @@ public static class ApplicationReviewExtensions
         return new ApplicationReview
         {
             Id        = review.Id,
-            AppId     = appId,
             UserName  = review.UserName,
             UserImage = review.UserImage,
             Date      = review.Date,
