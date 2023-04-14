@@ -10,7 +10,7 @@ public partial class CMPS278DataContext : DbContext
     public CMPS278DataContext(DbContextOptions<CMPS278DataContext> options) : base(options)
     {
     }
-
+    public virtual DbSet<Movies> Movies { get; set; }
     public virtual DbSet<BooksData> BooksDatas { get; set; }
 
     public virtual DbSet<BooksReview> BooksReviews { get; set; }
