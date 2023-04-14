@@ -24,9 +24,9 @@ public class MoviesController : ControllerBase
         {
             _context = context;
         }
-        private static List<Movies> Movies = new List<Movies>
+        private static List<Movie> Movies = new List<Movie>
             {
-                new Movies
+                new Movie
                 {
                     ID = 1,
                     title="test",
@@ -40,7 +40,7 @@ public class MoviesController : ControllerBase
                     price=1,
                     reviews="test"
                 },
-                new Movies
+                new Movie
                 {
                     ID = 2,
                     title="test",
@@ -57,8 +57,8 @@ public class MoviesController : ControllerBase
 
             };
         // GET: Movies
-        [HttpGet]
-        public async Task<ActionResult<List<Movies>>> Get()
+        [HttpGet(Name ="GetMovies")]
+        public async Task<ActionResult<List<Movie>>> Get()
         {
 
             return Ok(Movies);

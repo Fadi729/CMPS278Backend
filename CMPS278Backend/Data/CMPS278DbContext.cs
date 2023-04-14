@@ -17,6 +17,6 @@ public class CMPS278DbContext : IdentityDbContext<IdentityUser>
         base.OnModelCreating(builder);
     }
 
-    public DbSet<CMPS278Backend.Movies> Movies { get; set; } = default!;
+    public DbSet<CMPS278Backend.Models.Movie> Movies { get; set; } = default!;
     
 }

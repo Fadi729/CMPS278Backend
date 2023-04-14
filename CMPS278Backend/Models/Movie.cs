@@ -1,14 +1,14 @@
-﻿namespace CMPS278Backend
+﻿namespace CMPS278Backend.Models
 {
-    public class Movies
+    public class Movie
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         public string title { get; set; }
 
         public string image { get; set; }
 
-        public int rating { get; set; }
+        public string rating { get; set; }
 
         public string genres { get; set; }
 
@@ -20,7 +20,7 @@
 
         public string description { get; set; }
 
-        public int price { get; set; }
+        public string price { get; set; }
 
         public string reviews { get; set; }
 
