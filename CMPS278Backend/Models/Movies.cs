@@ -8,7 +8,7 @@
 
         public string image { get; set; }
 
-        public int rating { get; set; }
+        public string rating { get; set; }
 
         public string genres { get; set; }
 
