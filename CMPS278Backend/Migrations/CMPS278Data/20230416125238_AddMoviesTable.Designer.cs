@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMPS278Backend.Migrations.CMPS278Data
 {
     [DbContext(typeof(CMPS278DataContext))]
-    [Migration("20230414192102_AddMovieTable")]
-    partial class AddMovieTable
+    [Migration("20230416125238_AddMoviesTable")]
+    partial class AddMoviesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -579,7 +579,15 @@ namespace CMPS278Backend.Migrations.CMPS278Data
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("credits")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("date")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -604,6 +612,10 @@ namespace CMPS278Backend.Migrations.CMPS278Data
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("reviews")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("sales")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

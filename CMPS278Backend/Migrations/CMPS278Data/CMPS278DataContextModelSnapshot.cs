@@ -576,7 +576,15 @@ namespace CMPS278Backend.Migrations.CMPS278Data
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("credits")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("date")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -601,6 +609,10 @@ namespace CMPS278Backend.Migrations.CMPS278Data
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("reviews")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("sales")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

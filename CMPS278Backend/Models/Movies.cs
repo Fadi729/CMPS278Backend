@@ -6,6 +6,7 @@
 
         public string title { get; set; }
 
+        public string date { get; set; }
         public string image { get; set; }
 
         public string rating { get; set; }
@@ -18,9 +19,13 @@
 
         public string credits { get; set; }
 
+        public string company { get; set; }
+
         public string description { get; set; }
 
         public string price { get; set; }
+
+        public string sales { get; set; }
 
         public string reviews { get; set; }
     }
