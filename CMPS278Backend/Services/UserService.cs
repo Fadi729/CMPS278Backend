@@ -61,7 +61,7 @@ public class UserService : IUserService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("id", googleUser.Subject),
+                new Claim("userId", googleUser.Subject),
             }),
 
 

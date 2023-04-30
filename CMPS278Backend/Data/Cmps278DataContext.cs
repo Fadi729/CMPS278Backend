@@ -10,7 +10,8 @@ public partial class CMPS278DataContext : DbContext
     public CMPS278DataContext(DbContextOptions<CMPS278DataContext> options) : base(options)
     {
     }
-    public virtual DbSet<Movies> Movies { get; set; }
+
+    public virtual DbSet<Movies>    Movies     { get; set; }
     public virtual DbSet<BooksData> BooksDatas { get; set; }
 
     public virtual DbSet<BooksReview> BooksReviews { get; set; }
@@ -23,6 +24,7 @@ public partial class CMPS278DataContext : DbContext
 
     public virtual DbSet<GameReview> GameReviews { get; set; }
 
+    public virtual DbSet<WishList> WishList { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -114,24 +116,36 @@ public partial class CMPS278DataContext : DbContext
         });
 
         modelBuilder.Entity<ApplicationData>(BaseModelBuilder);
-        
+
         modelBuilder.Entity<GameData>(BaseModelBuilder);
+
+        modelBuilder.Entity<WishList>(entity =>
+        {
+              entity.Property(e => e.Items)
+                    .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                                   v =>
+                                         JsonSerializer
+                                              .Deserialize<ICollection<WishListItem>>(v, (JsonSerializerOptions)null));
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     static void BaseModelBuilder<T>(EntityTypeBuilder<T> entity) where T : BaseDataModel
     {
-          entity.HasKey(e => e.AppId);
+        entity.HasKey(e => e.AppId);
 
-          entity.Property(e => e.Histogram)
-                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IDictionary<string, int>>(v, (JsonSerializerOptions)null));
+        entity.Property(e => e.Histogram)
+              .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                             v => JsonSerializer.Deserialize<IDictionary<string, int>>(v, (JsonSerializerOptions)null));
 
-          entity.Property(e => e.Screenshots)
-                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
+        entity.Property(e => e.Screenshots)
+              .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                             v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
 
-          entity.Property(e => e.Comments)
-                .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
+        entity.Property(e => e.Comments)
+              .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                             v => JsonSerializer.Deserialize<IList<string>>(v, (JsonSerializerOptions)null));
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

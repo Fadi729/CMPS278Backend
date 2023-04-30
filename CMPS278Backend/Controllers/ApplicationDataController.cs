@@ -19,7 +19,7 @@ public class ApplicationDataController : ControllerBase
 
     // GET: api/ApplicationData
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ApplicationDataDTO>>> GetApplicationData()
+    public async Task<ActionResult<IEnumerable<ApplicationDataDTO>>> GetApplicationsData()
     {
         if (_context.ApplicationData == null)
         {
@@ -56,7 +56,7 @@ public class ApplicationDataController : ControllerBase
             }
         }
 
-        return CreatedAtAction("GetApplicationData", new { id = applicationData.AppId }, applicationData);
+        return CreatedAtAction("GetApplicationsData", new { id = applicationData.AppId }, applicationData);
     }
 
     // POST: api/ApplicationData/list

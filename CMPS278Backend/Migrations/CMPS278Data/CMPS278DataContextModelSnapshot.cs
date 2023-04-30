@@ -629,6 +629,20 @@ namespace CMPS278Backend.Migrations.CMPS278Data
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("CMPS278Backend.Models.WishList", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Items")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("WishList");
+                });
+
             modelBuilder.Entity("CMPS278Backend.Models.ApplicationReview", b =>
                 {
                     b.HasOne("CMPS278Backend.Models.ApplicationData", "Application")
