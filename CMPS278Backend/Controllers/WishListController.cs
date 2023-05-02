@@ -1,4 +1,6 @@
-﻿using CMPS278Backend.Models;
+﻿using System.Security.Claims;
+using CMPS278Backend.Extensions;
+using CMPS278Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +22,7 @@ public class WishListController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<WishList>> GetWishList()
     {
-        string    userId   = HttpContext.User.Claims.First(c => c.Type == "userId").Value;
-        WishList? wishList = await _context.WishList.FindAsync(userId);
+        WishList? wishList = await _context.WishList.FindAsync(HttpContext.GetUserId());
 
         if (wishList == null)
         {
@@ -35,7 +36,7 @@ public class WishListController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> AddItemToWishList(WishListItem item)
     {
-        string    userId   = HttpContext.User.Claims.First(c => c.Type == "userId").Value;
+        string userId = HttpContext.GetUserId();
         WishList? wishList = await _context.WishList.FindAsync(userId);
 
         if (wishList == null)
@@ -49,17 +50,17 @@ public class WishListController : ControllerBase
         }
 
         wishList.Items.Add(item);
+        _context.Update(wishList);
         await _context.SaveChangesAsync();
 
         return Ok();
     }
 
     // DELETE: api/WishList
-    [HttpDelete("{itemId}")]
+    [HttpDelete]
     public async Task<ActionResult> RemoveItemFromWishList(string itemId)
     {
-        string    userId   = HttpContext.User.Claims.First(c => c.Type == "userId").Value;
-        WishList? wishList = await _context.WishList.FindAsync(userId);
+        WishList? wishList = await _context.WishList.FindAsync(HttpContext.GetUserId());
 
         if (wishList == null)
         {

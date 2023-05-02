@@ -61,7 +61,10 @@ public class UserService : IUserService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("userId", googleUser.Subject),
+                new Claim(ClaimTypes.NameIdentifier,   googleUser.Subject),
+                new Claim(JwtRegisteredClaimNames.Email, googleUser.Email),
+                new Claim(JwtRegisteredClaimNames.Name,  googleUser.Name),
+                new Claim("picture",                     googleUser.Picture)
             }),
 
 
