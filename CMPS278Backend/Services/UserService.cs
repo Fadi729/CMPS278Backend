@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using CMPS278Backend.Models;
@@ -12,27 +13,33 @@ namespace CMPS278Backend.Services;
 public class UserService : IUserService
 {
     readonly UserManager<IdentityUser> _userManager;
-    readonly JwtSettings               _jwtSettings;
-    readonly GoogleSettings            _googleSettings;
+    readonly JwtSettings _jwtSettings;
+    readonly GoogleSettings _googleSettings;
 
     public UserService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings, GoogleSettings googleSettings)
     {
-        _userManager    = userManager;
-        _jwtSettings    = jwtSettings;
+        _userManager = userManager;
+        _jwtSettings = jwtSettings;
         _googleSettings = googleSettings;
     }
 
 
     public async Task<JwtToken> LoginAsync(string token, CancellationToken cancellationToken)
     {
-        GoogleJsonWebSignature.Payload? googleUser =
-            await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings
-            {
-                Audience = new[] { _googleSettings.ClientId }
-            });
 
+        using HttpClient client = new();
+        HttpRequestMessage request = new(HttpMethod.Get, "https://www.googleapis.com/oauth2/v3/userinfo");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await client.SendAsync(request, cancellationToken);
 
-        IdentityUser? user = await _userManager.FindByIdAsync(googleUser.Subject);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception("Invalid Google Token");
+        }
+
+        var googleUser = await response.Content.ReadFromJsonAsync<GoogleResponse>(cancellationToken: cancellationToken);
+
+        IdentityUser? user = await _userManager.FindByIdAsync(googleUser.Sub);
 
         if (user is null)
         {
@@ -42,42 +49,50 @@ public class UserService : IUserService
         return AuthenticationTokenGeneratorAsync(googleUser);
     }
 
-    async Task RegisterAsync(GoogleJsonWebSignature.Payload googleUser, CancellationToken cancellationToken)
+    async Task RegisterAsync(GoogleResponse googleUser, CancellationToken cancellationToken)
     {
         IdentityResult creationResult = await _userManager.CreateAsync(new IdentityUser
         {
-            Email    = googleUser.Email,
+            Email = googleUser.Email,
             UserName = googleUser.Email.Split("@")[0],
-            Id       = googleUser.Subject
+            Id = googleUser.Sub
         });
     }
 
-    JwtToken AuthenticationTokenGeneratorAsync(GoogleJsonWebSignature.Payload googleUser)
+    JwtToken AuthenticationTokenGeneratorAsync(GoogleResponse googleUser)
     {
-        byte[]                  key          = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+        byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
         JwtSecurityTokenHandler tokenHandler = new();
 
         SecurityTokenDescriptor tokenDescriptor = new()
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier,   googleUser.Subject),
+                new Claim(ClaimTypes.NameIdentifier, googleUser.Sub),
                 new Claim(JwtRegisteredClaimNames.Email, googleUser.Email),
-                new Claim(JwtRegisteredClaimNames.Name,  googleUser.Name),
-                new Claim("picture",                     googleUser.Picture)
+                new Claim(JwtRegisteredClaimNames.Name, googleUser.Name),
+                new Claim("picture", googleUser.Picture)
             }),
 
 
-            Expires = googleUser.ExpirationTimeSeconds.HasValue
-                ? DateTime.UnixEpoch.AddSeconds(googleUser.ExpirationTimeSeconds.Value)
-                : DateTime.UtcNow.AddHours(1),
+            Expires = DateTime.UtcNow.AddHours(1),
 
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                                                        SecurityAlgorithms.HmacSha256Signature)
+                SecurityAlgorithms.HmacSha256Signature)
         };
 
         SecurityToken? token = tokenHandler.CreateToken(tokenDescriptor);
 
         return new JwtToken { AccessToken = tokenHandler.WriteToken(token) };
     }
+}
+
+class GoogleResponse
+{
+    public string Sub { get; set; }
+    public string Name { get; set; }
+    public string GivenName { get; set; }
+    public string FamilyName { get; set; }
+    public string Picture { get; set; }
+    public string Email { get; set; }
 }
