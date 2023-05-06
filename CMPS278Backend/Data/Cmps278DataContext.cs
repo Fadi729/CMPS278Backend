@@ -130,6 +130,17 @@ public partial class CMPS278DataContext : DbContext
                                               .Deserialize<ICollection<WishListItem>>(v, (JsonSerializerOptions)null));
         });
 
+        modelBuilder.Entity<History>(entity =>
+        {
+            entity.Property(e => e.Items)
+                  .HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                                 v =>
+                                       JsonSerializer
+                                            .Deserialize<IList<HistoryItem>>(v, (JsonSerializerOptions)null));
+        });
+
+
+
         OnModelCreatingPartial(modelBuilder);
     }
 

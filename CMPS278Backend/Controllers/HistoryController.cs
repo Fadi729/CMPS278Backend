@@ -46,7 +46,14 @@ public class HistoryController : ControllerBase
                 Items = new List<HistoryItem>()
             };
             _context.History.Add(history);
+
         }
+
+        if (history.Items.Count == 24 )
+        {
+            history.Items.RemoveAt(0);
+        }
+
 
         history.Items.Add(item);
         _context.Update(history);

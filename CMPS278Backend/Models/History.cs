@@ -7,7 +7,7 @@ namespace CMPS278Backend.Models
 	{
             [Key]
             public string UserId { get; set; }
-            public ICollection<HistoryItem> Items { get; set; }
+            public IList<HistoryItem> Items { get; set; }
     }
 
     public class HistoryItem
