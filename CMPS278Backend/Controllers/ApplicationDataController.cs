@@ -58,6 +58,20 @@ public class ApplicationDataController : ControllerBase
 
         return CreatedAtAction("GetApplicationsData", new { id = applicationData.AppId }, applicationData);
     }
+    
+    // PUT: api/ApplicationData
+     [HttpPut]
+     public async Task<ActionResult<ApplicationData>> PutApplicationData(ApplicationDataDTO applicationData)
+     {
+         if (_context.ApplicationData == null)
+         {
+            return Problem("Entity set 'CMPS278DataContext.ApplicationData'  is null.");
+         }
+    
+         _context.ApplicationData.Add(applicationData.ToApplicationData());
+            
+         return CreatedAtAction("GetApplicationsData", new { id = applicationData.AppId }, applicationData);
+     }
 
     // POST: api/ApplicationData/list
     [HttpPost("list")]

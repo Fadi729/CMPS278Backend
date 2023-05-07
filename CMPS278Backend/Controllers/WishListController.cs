@@ -3,6 +3,7 @@ using CMPS278Backend.Extensions;
 using CMPS278Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMPS278Backend.Controllers;
 
@@ -38,21 +39,21 @@ public class WishListController : ControllerBase
     {
         string userId = HttpContext.GetUserId();
         WishList? wishList = await _context.WishList.FindAsync(userId);
-
+        bool wishListExists = wishList != null;
+        
         if (wishList == null)
         {
             wishList = new WishList
             {
                 UserId = userId,
-                Items  = new List<WishListItem>()
+                Items = new List<WishListItem>()
             };
-            _context.WishList.Add(wishList);
         }
 
         wishList.Items.Add(item);
-        _context.Update(wishList);
+        _ = wishListExists ? _context.WishList.Update(wishList) : _context.WishList.Add(wishList);
+        
         await _context.SaveChangesAsync();
-
         return Ok();
     }
 

@@ -30,7 +30,6 @@ public class MoviesController : ControllerBase
         if (movie == null)
             return BadRequest("Movie not found");
         return Ok(movie);
-
     }
 
     [HttpPost]
@@ -39,7 +38,6 @@ public class MoviesController : ControllerBase
         _context.Movies.Add(new_movie);
         await _context.SaveChangesAsync();
         return Ok(await _context.Movies.ToListAsync());
-
     }
 
     [HttpPut]
@@ -66,14 +64,12 @@ public class MoviesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<List<Movies>>> DeleteMovie(int id)
     {
-
         var movie = await _context.Movies.FindAsync(id);
         if (movie == null)
             return BadRequest("Movie not found");
         _context.Movies.Remove(movie);
         await _context.SaveChangesAsync();
         return Ok(await _context.Movies.ToListAsync());
-
     }
 
     // GET: Movies/Details/5
